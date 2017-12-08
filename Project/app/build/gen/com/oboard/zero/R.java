@@ -16,12 +16,12 @@ public final class R {
     }
     public static final class id {
         public static final int main_ground=0x7f050001;
-        public static final int main_l=0x7f050003;
-        public static final int main_menu=0x7f050002;
-        public static final int main_menu0=0x7f050004;
-        public static final int main_menu1=0x7f050005;
-        public static final int main_menu2=0x7f050006;
-        public static final int main_menu3=0x7f050007;
+        public static final int main_l=0x7f050002;
+        public static final int main_menu0=0x7f050003;
+        public static final int main_menu1=0x7f050004;
+        public static final int main_menu2=0x7f050005;
+        public static final int main_menu3=0x7f050006;
+        public static final int main_menu4=0x7f050007;
         public static final int main_t=0x7f050008;
         public static final int main_tg=0x7f050009;
         public static final int main_w=0x7f050000;

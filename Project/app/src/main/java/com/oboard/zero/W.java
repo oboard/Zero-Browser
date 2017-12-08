@@ -11,14 +11,17 @@ public class W extends WebView {
 
     public WebChromeClient mClient;
 
-    public W(final Context context) {
-        super(context);
-        init();
-    } public W(final Context context, AttributeSet attr) {
-        super(context, attr);
-        init();
-    } void init() {
 
+    public W(Context context) {
+        this(context, null);
+    }
+
+    public W(Context context, AttributeSet attrs) {
+        this(context, attrs, 0);
+    }
+
+    public W(Context context, AttributeSet attrs, int defStyleAttr) {
+        super(context, attrs, defStyleAttr);
         //一堆WebView设置
         final WebSettings webSettings = getSettings();
 
@@ -30,22 +33,16 @@ public class W extends WebView {
 
         if (Build.VERSION.SDK_INT > 16) {
 			try {
-				Class<?> c = Class.forName("android.webkit.WebSettingsClassic");
+				Class<?> c = webSettings.getClass();
 				Method tt = c.getMethod("setDisplayZoomControls", new Class[] { boolean.class });
 				tt.invoke(webSettings, false);
-			} catch (ClassNotFoundException e) {
-				System.out.println("No such class: " + e);
 			} catch (NoSuchMethodException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			} catch (IllegalArgumentException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			} catch (IllegalAccessException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			} catch (InvocationTargetException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
         }
@@ -76,8 +73,8 @@ public class W extends WebView {
             webSettings.setLoadsImagesAutomatically(true);
         else
             webSettings.setLoadsImagesAutomatically(false);
-
-	}
+		
+    }
 	
     public static String toWeb(String s) {
         String url = s;

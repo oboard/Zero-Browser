@@ -11,8 +11,9 @@ public class CardView extends FrameLayout {
     private RectF mRoundRect = new RectF();
     private Paint mMaskPaint = new Paint();
     private Paint mZonePaint = new Paint();
-	private boolean mSeen = true;
+	private boolean mSeen;
     private float mRadius;
+    private int mColor;
 
     public CardView(Context context) {
         this(context, null);
@@ -24,12 +25,14 @@ public class CardView extends FrameLayout {
 
     public CardView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+		mColor = Color.WHITE;
         mRadius = (2 * getResources().getDisplayMetrics().density + 0.5f);
-		setBackgroundColor(Color.WHITE);
+		setBackgroundColor(mColor);
         mMaskPaint.setAntiAlias(true);
         mMaskPaint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));
         mZonePaint.setAntiAlias(true);
-        mZonePaint.setColor(Color.WHITE);
+        mZonePaint.setColor(mColor);
+		mSeen = true;
     }
 	
 	public void setRound(int dip) {
@@ -41,13 +44,16 @@ public class CardView extends FrameLayout {
 	}
 	
 	public void setColor(int color) {
+		mColor = color;
 		setBackgroundColor(color);
 	}
 	
     @Override
     public void draw(Canvas canvas) {
 		if (!mSeen) {
+			setBackgroundColor(Color.TRANSPARENT);
 			super.draw(canvas);
+			setBackgroundColor(mColor);
 			return;
 		}
         canvas.saveLayer(mRoundRect, mZonePaint, Canvas.ALL_SAVE_FLAG);
