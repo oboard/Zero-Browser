@@ -18,7 +18,7 @@ import java.net.*;
 public class M extends Activity {
 
 	static W v;//WebView
-	static View tg;//Ground
+	static TextView tg;//Ground
 	static CardView c;//EditText Border
 	static EditText t;//URL text
 	static ScrollView m;//Menu
@@ -32,8 +32,8 @@ public class M extends Activity {
         setContentView(R.layout.main);
 
 		//Find Views
-		tg = findViewById(R.id.main_tg);
 		t = (EditText) findViewById(R.id.main_t);
+		tg = (TextView) findViewById(R.id.main_tg);
 		f = (FrameLayout) findViewById(R.id.main_w);
 		l = (LinearLayout) findViewById(R.id.main_l);
 		g = (FrameLayout) findViewById(R.id.main_ground);
@@ -55,10 +55,6 @@ public class M extends Activity {
 		
 		c.setRound(32);
 		c.setColor(Color.argb(20, 0, 0, 0));
-		
-		//Set Focus
-		v.requestFocus();
-		keyboardState(false);
 		
         t.setOnEditorActionListener(new TextView.OnEditorActionListener() {  
 				@Override
@@ -108,7 +104,7 @@ public class M extends Activity {
                         return true;
                     } return super.shouldOverrideUrlLoading(view, url);
                 }
-
+		
                 public void onPageFinished(WebView v, String url) {
                     super.onPageFinished(v, url);
 					//Colorful
@@ -119,6 +115,14 @@ public class M extends Activity {
 						v.getSettings().setLoadsImagesAutomatically(true);
                 }
             });
+        //设置WebChromeClient
+		v.setWebChromeClient(new WebChromeClient() {
+			@Override
+			public void onReceivedTitle(WebView view, String title) {
+				super.onReceivedTitle(view, title);
+				setTitle(title);
+			}
+		});
     }
 
 	@Override
@@ -145,9 +149,12 @@ public class M extends Activity {
 		c.setSeen(false);
 		c.invalidate();
 
-		v.clearFocus();
+		t.setText(v.getUrl());
+		t.setVisibility(View.VISIBLE);
 		t.requestFocus();
 		t.selectAll();
+		
+		tg.setVisibility(View.GONE);
 		
 		keyboardState(true);
 	}
@@ -170,8 +177,9 @@ public class M extends Activity {
 		c.setSeen(true);
 		c.invalidate();
 
-		t.setSelection(0);
-		t.clearFocus();
+		tg.setText(v.getUrl());
+		t.setVisibility(View.GONE);
+		tg.setVisibility(View.VISIBLE);
 		v.requestFocus();
 		
 		keyboardState(false);

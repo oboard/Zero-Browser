@@ -21,9 +21,9 @@ public class MenuButton extends View {
 	@Override
 	protected void onDraw(Canvas canvas) {
 		int centreX = getWidth() / 2;
-		int height = getHeight() / 10 * 6;
+		int height = getHeight() / 10 * 5;
 		int circleRadius = height / 10;
-		int tranY = (getHeight() - height) / 4;
+		int tranY = (getHeight() - height) / 3;
 		Paint p = new Paint();
 		p.setAntiAlias(true);
 		p.setColor(Color.BLACK);

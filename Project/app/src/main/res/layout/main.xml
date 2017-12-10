@@ -4,7 +4,7 @@
 	android:layout_width="fill_parent"
 	android:layout_height="fill_parent"
 	android:background="#ffffff">
-
+	
 	<FrameLayout
 		android:id="@+id/main_w"
 		android:layout_width="fill_parent"
@@ -106,12 +106,11 @@
 		android:layout_width="fill_parent"
 		android:layout_marginLeft="8dp"
 		android:layout_marginTop="8dp"
-		android:layout_marginRight="56dp">
+		android:layout_marginRight="48dp">
 
 		<EditText
 			android:id="@+id/main_t"
 			android:text="https://www.so.com/"
-			android:focusableInTouchMode="true"
 			android:layout_height="fill_parent"
 			android:layout_width="fill_parent"
 			android:background="#00000000"
@@ -120,15 +119,20 @@
 			android:inputType="textUri"
 			android:paddingLeft="10dp"
 			android:singleLine="true"
-			android:focusable="true"
-			android:maxLines="1"/>
+			android:maxLines="1"
+			android:visibility="gone"/>
 		
-		<View
+		<TextView
 			android:id="@+id/main_tg"
 			android:layout_height="fill_parent"
 			android:layout_width="fill_parent"
+			android:background="#00000000"
+			android:textColor="#000000"
+			android:paddingLeft="10dp"
+			android:singleLine="true"
 			android:clickable="true"
-			android:onClick="onEdit"/>
+			android:onClick="onEdit"
+			android:maxLines="1"/>
 
 	</com.oboard.zero.CardView>
 
