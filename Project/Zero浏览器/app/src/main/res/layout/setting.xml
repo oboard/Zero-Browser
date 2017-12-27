@@ -1,0 +1,33 @@
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    
+    <PreferenceCategory android:title="通用">
+        
+        <EditTextPreference
+            android:defaultValue="https://www.so.com"
+            android:inputType="textUri"
+            android:key="home"
+            android:maxLines="1"
+            android:selectAllOnFocus="true"
+            android:singleLine="true"
+            android:title="主页" />
+        
+        <ListPreference
+            android:key="search"
+            android:dialogTitle="选择搜索引擎"
+            android:entries="@array/search"
+            android:entryValues="@array/searchuri"
+            android:title="搜索引擎"/>
+        
+        <SwitchPreference android:key="color" android:title="变色器" />
+            
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="关于">
+
+        <Preference
+            android:summary="开发者"
+            android:title="一块小板子" />
+
+    </PreferenceCategory>
+    
+</PreferenceScreen>
