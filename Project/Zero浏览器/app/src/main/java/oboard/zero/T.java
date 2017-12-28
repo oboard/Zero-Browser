@@ -18,15 +18,17 @@ public class T extends PreferenceActivity {
         addPreferencesFromResource(R.layout.setting);
         etp = (EditTextPreference)findPreference("home");
         etp.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
-                public boolean onPreferenceChange(Preference p,Object o) {
-                    S.put("h", lp.getValue()).ok();
+                public boolean onPreferenceChange(Preference p, Object o) {
+                    S.put("h", etp.getText()).ok();
+                    M.d_h = etp.getText();
                     return true;
                 }
             });
         lp = (ListPreference)findPreference("search");
         lp.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
-            public boolean onPreferenceChange(Preference p,Object o) {
+            public boolean onPreferenceChange(Preference p, Object o) {
                 S.put("s", lp.getValue()).ok();
+                M.d_s = lp.getValue();
                 return true;
             }
         });

@@ -64,6 +64,9 @@ public class M extends Activity {
                 .put("s", d_s)
                 .put("h", d_h)
             .ok();
+        } else {
+            M.d_h = S.get("h", d_h);
+            M.d_s = S.get("s", d_s);
         }
 		
 		//Create WebView
@@ -228,8 +231,7 @@ public class M extends Activity {
 					v.goForward();
 				break;
 			case R.id.main_menu4:
-				if (v.canGoForward())
-					v.goForward();
+                startActivity(new Intent(this, T.class));
 				break;
 			default:
 				if (m.getVisibility() == View.GONE) {
