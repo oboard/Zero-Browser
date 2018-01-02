@@ -20,7 +20,7 @@
         <item>https://sogo.com/web?query=</item>
         <item>https://yandex.com/search/?text=</item>
         <item>https://search.yahoo.com/search?p=</item>
-        <item>https://so.com/s?q=</item>
+        <item>https://so.com/s?nav=0&amp;q=</item>
     </string-array>
     
 </resources>

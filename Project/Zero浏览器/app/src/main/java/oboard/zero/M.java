@@ -28,11 +28,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import android.view.animation.RotateAnimation;
 
 public class M extends Activity {
-    
-    static String d_s = "https://www.so.com/s?q=";
+
+    static String d_s = "https://www.so.com/s?nav=0&q=";
     static String d_h = "https://www.so.com";
+    static boolean d_c = true;
 
 	static W v;//WebView
 	static View tg;//Ground
@@ -60,15 +62,17 @@ public class M extends Activity {
 		S.init(this, "zero");
         if (S.get("first", true)) {
             S
-            .put("first", false)
+                .put("first", false)
                 .put("s", d_s)
                 .put("h", d_h)
-            .ok();
+                .put("c", d_c)
+                .ok();
         } else {
             M.d_h = S.get("h", d_h);
             M.d_s = S.get("s", d_s);
+            M.d_c = S.get("c", d_c);
         }
-		
+
 		//Create WebView
 		v = new W(this);
         v.setFocusable(true);
@@ -81,7 +85,7 @@ public class M extends Activity {
 
 		//CardView Style
 		c = ((CardView)t.getParent());
-		
+
 		c.setRound(32);
 		c.setColor(Color.argb(20, 0, 0, 0));
 
@@ -118,7 +122,7 @@ public class M extends Activity {
 						M.t.setText(url);
 						//Save Now URL
 						S.put("ing", url).ok();
-						
+
                         if (hitTestResult == null) {
                             view.loadUrl(url);
                             return true;
@@ -129,12 +133,12 @@ public class M extends Activity {
                             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_SINGLE_TOP);
                             startActivity(intent);
                         } catch (Exception e) {
-							
+
 						}
                         return true;
                     } return super.shouldOverrideUrlLoading(view, url);
                 }
-		
+
                 public void onPageFinished(WebView v, String url) {
                     super.onPageFinished(v, url);
 					//Colorful
@@ -147,12 +151,12 @@ public class M extends Activity {
             });
         //设置WebChromeClient
 		v.setWebChromeClient(new WebChromeClient() {
-			@Override
-			public void onReceivedTitle(WebView view, String title) {
-				super.onReceivedTitle(view, title);
-				setTitle(title);
-			}
-		});
+                @Override
+                public void onReceivedTitle(WebView view, String title) {
+                    super.onReceivedTitle(view, title);
+                    setTitle(title);
+                }
+            });
     }
 
 	@Override
@@ -167,7 +171,7 @@ public class M extends Activity {
 		else
 			finish();
 	}
-	
+
 	public void onEdit(View view) {
         //编辑中
 		if (g.getVisibility() != View.GONE) return;
@@ -177,20 +181,21 @@ public class M extends Activity {
 		aniA.setDuration(225);
 		g.startAnimation(aniA);
 		g.setVisibility(View.VISIBLE);
-		
+
 		c.setSeen(false);
 		c.invalidate();
 
 		t.setText(v.getUrl());
 		t.setEnabled(true);
+        t.requestFocus();
         t.selectAll();
-		
+
 		keyboardState(true);
 	}
 
 	public void onBack(View view) {
 		if (g.getVisibility() != View.VISIBLE) return;
-		AlphaAnimation aniA = new AlphaAnimation(1, 0);
+		AlphaAnimation aniA = new AlphaAnimation(1.0f, 0.0f);
 		aniA.setInterpolator(new DecelerateInterpolator());
 		aniA.setDuration(225);
 		aniA.setAnimationListener(new Animation.AnimationListener() {
@@ -201,14 +206,14 @@ public class M extends Activity {
 				}
 			});
 		g.startAnimation(aniA);
-		
+
 		c.setSeen(true);
 		c.invalidate();
 
         t.setSelection(0);
 		t.setEnabled(false);
 		tg.setVisibility(View.VISIBLE);
-        
+
 		keyboardState(false);
 	}
 
@@ -236,11 +241,12 @@ public class M extends Activity {
 			default:
 				if (m.getVisibility() == View.GONE) {
 					AnimationSet aniA = new AnimationSet(true);
-					aniA.addAnimation(new TranslateAnimation(Animation.RELATIVE_TO_SELF, 0f,
-															 Animation.RELATIVE_TO_SELF, 0f,
+					aniA.addAnimation(new TranslateAnimation(Animation.RELATIVE_TO_SELF, 0.0f,
+															 Animation.RELATIVE_TO_SELF, 0.0f,
 															 Animation.RELATIVE_TO_SELF, -0.5f,
-															 Animation.RELATIVE_TO_SELF, 0f));
-					aniA.addAnimation(new AlphaAnimation(0.5f, 1));
+															 Animation.RELATIVE_TO_SELF, 0.0f));
+                    aniA.addAnimation(new RotateAnimation(30.0f, 0.0f));
+					aniA.addAnimation(new AlphaAnimation(0.5f, 1.0f));
 					aniA.setInterpolator(new DecelerateInterpolator());
 					aniA.setDuration(225);
 					m.startAnimation(aniA);
@@ -251,11 +257,11 @@ public class M extends Activity {
 
 		//菜单关闭动画
 		AnimationSet aniA = new AnimationSet(true);
-		aniA.addAnimation(new TranslateAnimation(Animation.RELATIVE_TO_SELF, 0f,
-												 Animation.RELATIVE_TO_SELF, 0f,
-												 Animation.RELATIVE_TO_SELF, 0f,
+		aniA.addAnimation(new TranslateAnimation(Animation.RELATIVE_TO_SELF, 0.0f,
+												 Animation.RELATIVE_TO_SELF, 0.0f,
+												 Animation.RELATIVE_TO_SELF, 0.0f,
 												 Animation.RELATIVE_TO_SELF, -0.5f));
-		aniA.addAnimation(new AlphaAnimation(1, 0));
+		aniA.addAnimation(new AlphaAnimation(1.0f, 0.0f));
 		aniA.setInterpolator(new DecelerateInterpolator());
 		aniA.setDuration(225);
 		aniA.setAnimationListener(new Animation.AnimationListener() {
@@ -267,7 +273,7 @@ public class M extends Activity {
 			});
 		m.startAnimation(aniA);
 	}
-	
+
 	public void keyboardState(boolean open) {
         InputMethodManager i = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         if (open)
@@ -280,54 +286,62 @@ public class M extends Activity {
 
     public int blendColor(int colorA, int colorB, float ratio) {  
         final float inverseRatio = 1f - ratio;
-        float a = (Color.alpha(colorA) * ratio) + (Color.alpha(colorB) * inverseRatio);
-        float r = (Color.red(colorA) * ratio) + (Color.red(colorB) * inverseRatio);
-        float g = (Color.green(colorA) * ratio) + (Color.green(colorB) * inverseRatio);
-        float b = (Color.blue(colorA) * ratio) + (Color.blue(colorB) * inverseRatio);
+        float a = (Color.alpha(colorA) * ratio) + (Color.alpha(colorB) * inverseRatio),
+            r = (Color.red(colorA) * ratio) + (Color.red(colorB) * inverseRatio),
+            g = (Color.green(colorA) * ratio) + (Color.green(colorB) * inverseRatio),
+            b = (Color.blue(colorA) * ratio) + (Color.blue(colorB) * inverseRatio);
         return Color.argb((int) a, (int) r, (int) g, (int) b);
     }
-	
+
 	public void changeColor(String url) {
 		if (url.contains(":") && url.contains("//") && url.contains("http")) {
 			Uri uri = Uri.parse(url);
 			int color = Color.WHITE;
-			Toast.makeText(this, uri.getHost(), Toast.LENGTH_SHORT).show();
-			switch (uri.getHost().replace("www.", "m.")) {
-				case "m.bilibili.com":
-					color = 0xffF06292;
-					break;
-				case "m.coolapk.com":
-					color = 0xff4CAF50;
-					break;
-				case "m.zhihu.com":
-					color = 0xff2196F3;
-					break;
-				case "m.baidu.com":
-					color = 0xffEEEEEE;
-					break;
-				case "news.baidu.com":
-					color = 0xff2196F3;
-					break;
-				case "m.taobao.com":
-					color = 0xffFF5722;
-					break;
-				case "m.tmall.com":
-					color = 0xffE53935;
-					break;
-                case "music.163.com":
-                    color = 0xffE53935;
-					break;
-				case "dushu.m.baidu.com":
-					color = 0xffFF5722;
-					break;
-				case "zhihu.sogou.com":
-					color = 0xff2196F3;
-					break;
-				case "outlook.live.com":
-					color = 0xff039BE5;
-					break;
+			//Toast.makeText(this, uri.getHost(), Toast.LENGTH_SHORT).show();
+            if (d_c) {
+                //d_c是变色器的开关
+                switch (uri.getHost().replace("www.", "m.")) {
+                    case "m.bilibili.com":
+                        color = 0xffF06292;
+                        break;
+                    case "m.coolapk.com":
+                        color = 0xff4CAF50;
+                        break;
+                    case "m.zhihu.com":
+                        color = 0xff2196F3;
+                        break;
+                    case "m.baidu.com":
+                        color = 0xffEEEEEE;
+                        break;
+                    case "news.baidu.com":
+                        color = 0xff2196F3;
+                        break;
+                    case "m.taobao.com":
+                        color = 0xffFF5722;
+                        break;
+                    case "m.tmall.com":
+                        color = 0xffE53935;
+                        break;
+                    case "music.163.com":
+                        color = 0xffE53935;
+                        break;
+                    case "baike.sogou.com":
+                        color = 0xff607D8B;
+                        break;
+                    case "github.com":
+                        color = 0xff9E9E9E;
+                        break;
+                    case "dushu.m.baidu.com":
+                        color = 0xffFF5722;
+                        break;
+                    case "zhihu.sogou.com":
+                        color = 0xff2196F3;
+                        break;
+                    case "outlook.live.com":
+                        color = 0xff039BE5;
+                        break;
+                }
 			}
-			
 			//Android 5.0 +
 			if (Build.VERSION.SDK_INT >= 21) {
 				try {
@@ -336,12 +350,12 @@ public class M extends Activity {
 					e.printStackTrace();
 				}
 			}
-			
+
 			color = blendColor(color, Color.WHITE, 0.8f);
-			
+
 			r.setBackgroundColor(color);
 			l.setBackgroundColor(Color.argb(170, Color.red(color), Color.green(color), Color.blue(color)));
-			
+
 		}
 	}
 

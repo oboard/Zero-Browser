@@ -6,11 +6,13 @@ import android.content.SharedPreferences;
 import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.EditTextPreference;
+import android.preference.SwitchPreference;
 
 public class T extends PreferenceActivity {
     
     static ListPreference lp;
     static EditTextPreference etp;
+    static SwitchPreference sp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,6 +33,14 @@ public class T extends PreferenceActivity {
                 M.d_s = lp.getValue();
                 return true;
             }
-        });
+            });
+        sp = (SwitchPreference)findPreference("color");
+        sp.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+                public boolean onPreferenceChange(Preference p, Object o) {
+                    S.put("c", sp.isChecked()).ok();
+                    M.d_c = sp.isChecked();
+                    return true;
+                }
+            });
     }
 }
