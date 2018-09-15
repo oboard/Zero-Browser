@@ -27,6 +27,7 @@ public final class R {
         public static final int main_l=0x7f080002;
         public static final int main_t=0x7f080003;
         public static final int main_tg=0x7f080004;
+        public static final int main_ti=0x7f080005;
         public static final int main_w=0x7f080000;
     }
     public static final class layout {

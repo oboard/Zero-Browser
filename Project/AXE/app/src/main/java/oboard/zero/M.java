@@ -29,6 +29,8 @@ import android.widget.Toast;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import android.view.animation.RotateAnimation;
+import android.view.Gravity;
+import java.util.ArrayList;
 
 public class M extends Activity {
 
@@ -36,13 +38,17 @@ public class M extends Activity {
     static String d_h = "https://www.so.com";
     static boolean d_c = true;
 
+	static int bc = 0xFFFFFF, fc;//backcolor,forecolor
+
 	static W v;//WebView
 	static View tg;//Ground
 	static CardView c;//EditText Border
 	static EditText t;//URL text
+	static TextView ti;//title text
 	static ScrollView m;//Menu
 	static LinearLayout l;//Menu
 	static FrameLayout f, g, r;
+	static ArrayList<TextView> mm = new ArrayList<TextView>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,11 +64,11 @@ public class M extends Activity {
 		g = (FrameLayout) findViewById(R.id.main_ground);
 		r = (FrameLayout) f.getParent();
 		m = (ScrollView) l.getParent();
+		ti = (TextView) findViewById(R.id.main_ti);
 
 		S.init(this, "zero");
         if (S.get("first", true)) {
-            S
-                .put("first", false)
+            S.put("first", false)
                 .put("s", d_s)
                 .put("h", d_h)
                 .put("c", d_c)
@@ -73,6 +79,10 @@ public class M extends Activity {
             M.d_c = S.get("c", d_c);
         }
 
+
+		//加载菜单
+		addMenuItem("刷新", "主页", "前进", "后退", "设置", "+");
+		
 		//Create WebView
 		v = new W(this);
         v.setFocusable(true);
@@ -138,7 +148,7 @@ public class M extends Activity {
                         return true;
                     } return super.shouldOverrideUrlLoading(view, url);
                 }
-
+				
                 public void onPageFinished(WebView v, String url) {
                     super.onPageFinished(v, url);
 					//Colorful
@@ -154,9 +164,11 @@ public class M extends Activity {
                 @Override
                 public void onReceivedTitle(WebView view, String title) {
                     super.onReceivedTitle(view, title);
+					ti.setText(title);
                     setTitle(title);
                 }
             });
+
     }
 
 	@Override
@@ -217,50 +229,77 @@ public class M extends Activity {
 		keyboardState(false);
 	}
 
+	public void addMenuItem(String...s) {
+		for (String ss : s) {
+			TextView mi = new TextView(this);
+			mi.setTextColor(fc);
+			mi.setText(ss);
+			mi.setMinHeight(dip2px(48));
+			mi.setClickable(true);
+			mi.setFocusable(true);
+			mi.setGravity(Gravity.CENTER);
+			mi.setOnClickListener(new View.OnClickListener() {
+					@Override
+					public void onClick(View view) {
+						onMenu(view);
+					}
+				});
+			l.addView(mi, new LinearLayout.LayoutParams(LinearLayout.LayoutParams.FILL_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+			mm.add(mi);
+		}
+	}
+
 	public void onMenu(View view) {
 		//at Menu Button
 
-		switch (((TextView)view).getText().toString()) {
-			case "刷新":
-				v.reload();
-				break;
-			case "主页":
-				v.loadUrl(d_h);
-				break;
-			case "后退":
-				if (v.canGoBack())
-					v.goBack();
-				break;
-			case "前进":
-				if (v.canGoForward())
-					v.goForward();
-				break;
-			case "设置":
-                startActivity(new Intent(this, T.class));
-				break;
-			default:
-				if (m.getVisibility() == View.GONE) {
-					AnimationSet aniA = new AnimationSet(true);
-					aniA.addAnimation(new TranslateAnimation(Animation.RELATIVE_TO_SELF, 0.0f,
-															 Animation.RELATIVE_TO_SELF, 0.0f,
-															 Animation.RELATIVE_TO_SELF, -0.5f,
-															 Animation.RELATIVE_TO_SELF, 0.0f));
-                    aniA.addAnimation(new RotateAnimation(30.0f, 0.0f));
-					aniA.addAnimation(new AlphaAnimation(0.5f, 1.0f));
-					aniA.setInterpolator(new DecelerateInterpolator());
-					aniA.setDuration(225);
-					m.startAnimation(aniA);
-					m.setVisibility(View.VISIBLE);
-					return;
-				}
+		if (view instanceof MenuButton) {
+			//open menu
+			if (m.getVisibility() == View.GONE) {
+				AnimationSet aniA = new AnimationSet(true);
+				aniA.addAnimation(new TranslateAnimation(Animation.RELATIVE_TO_SELF, 0.0f,
+														 Animation.RELATIVE_TO_SELF, 0.0f,
+														 Animation.RELATIVE_TO_SELF, 0.5f,
+														 Animation.RELATIVE_TO_SELF, 0.0f));
+				aniA.addAnimation(new RotateAnimation(30.0f, 0.0f,
+													  Animation.RELATIVE_TO_SELF, 0.5f,
+													  Animation.RELATIVE_TO_SELF, 1.0f));
+				aniA.addAnimation(new AlphaAnimation(0.5f, 1.0f));
+				aniA.setInterpolator(new DecelerateInterpolator());
+				aniA.setDuration(225);
+				m.startAnimation(aniA);
+				m.setVisibility(View.VISIBLE);
+				return;
+			}
+		} else if (view instanceof TextView) {
+			switch (((TextView)view).getText().toString()) {
+				case "刷新":
+					v.reload();
+					break;
+				case "主页":
+					v.loadUrl(d_h);
+					break;
+				case "后退":
+					if (v.canGoBack())
+						v.goBack();
+					break;
+				case "前进":
+					if (v.canGoForward())
+						v.goForward();
+					break;
+				case "设置":
+					startActivity(new Intent(this, T.class));
+					break;
+				case "+" :
+					addMenuItem("666");
+					break;
+			}
 		}
-
 		//菜单关闭动画
 		AnimationSet aniA = new AnimationSet(true);
 		aniA.addAnimation(new TranslateAnimation(Animation.RELATIVE_TO_SELF, 0.0f,
 												 Animation.RELATIVE_TO_SELF, 0.0f,
 												 Animation.RELATIVE_TO_SELF, 0.0f,
-												 Animation.RELATIVE_TO_SELF, -0.5f));
+												 Animation.RELATIVE_TO_SELF, 0.5f));
 		aniA.addAnimation(new AlphaAnimation(1.0f, 0.0f));
 		aniA.setInterpolator(new DecelerateInterpolator());
 		aniA.setDuration(225);
@@ -282,6 +321,15 @@ public class M extends Activity {
             View view = getWindow().peekDecorView();
             if (view != null) i.hideSoftInputFromWindow(view.getWindowToken(), 0);
         }
+    }
+	
+	public int dip2px(float dipValue) {
+        return (int)(dipValue * getResources().getDisplayMetrics().density + 0.5f) ;
+    }
+	
+	public static boolean isLightColor(int color) {
+        double darkness = 1 - (0.299 * Color.red(color) + 0.587 * Color.green(color) + 0.114 * Color.blue(color)) / 255;
+        return (darkness < 0.5);
     }
 
     public int blendColor(int colorA, int colorB, float ratio) {  
@@ -349,6 +397,20 @@ public class M extends Activity {
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
+			}
+			ti.setBackgroundColor(blendColor(color, Color.BLACK, 0.8f));
+			bc = color;
+
+			int light = getResources().getColor(R.color.backcolor), dark = getResources().getColor(R.color.forecolor);
+			if (isLightColor(bc)) {
+				fc = (dark);
+			} else {
+				fc = (light);
+			}
+
+			t.setTextColor(fc);
+			for (int i = 0;i < mm.size(); i++) {
+				mm.get(i).setTextColor(fc);
 			}
 
 			color = blendColor(color, Color.WHITE, 0.8f);

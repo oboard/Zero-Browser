@@ -3,7 +3,10 @@
 	xmlns:android="http://schemas.android.com/apk/res/android"
 	android:layout_width="fill_parent"
 	android:layout_height="fill_parent"
-	android:background="@color/backcolor">
+	android:background="@color/backcolor"
+	android:clipChildren="false"
+	android:paddingTop="23dp"
+	android:clipToPadding="false">
 
 	<FrameLayout
 		android:id="@+id/main_w"
@@ -22,7 +25,7 @@
 		android:layout_marginBottom="48dp"/>
 
 	<ScrollView
-		android:layout_height="fill_parent"
+		android:layout_height="wrap_content"
 		android:layout_width="wrap_content"
 		android:layout_gravity="bottom|right"
 		android:visibility="gone"
@@ -34,64 +37,7 @@
 			android:layout_height="wrap_content"
 			android:background="#aaffffff"
 			android:gravity="center"
-			android:orientation="vertical">
-
-			<TextView
-				android:layout_gravity="right"
-				android:layout_height="48dp"
-				android:layout_width="48dp"
-				android:textColor="@color/forecolor"
-				android:text="刷新"
-				android:gravity="center"
-				android:onClick="onMenu"
-				android:focusable="true"
-				android:clickable="true"/>
-
-			<TextView
-				android:layout_gravity="right"
-				android:layout_height="48dp"
-				android:layout_width="48dp"
-				android:textColor="@color/forecolor"
-				android:text="主页"
-				android:gravity="center"
-				android:onClick="onMenu"
-				android:focusable="true"
-				android:clickable="true"/>
-
-			<TextView
-				android:layout_gravity="right"
-				android:layout_height="48dp"
-				android:layout_width="48dp"
-				android:textColor="@color/forecolor"
-				android:text="后退"
-				android:gravity="center"
-				android:onClick="onMenu"
-				android:focusable="true"
-				android:clickable="true"/>
-
-			<TextView
-				android:layout_gravity="right"
-				android:layout_height="48dp"
-				android:layout_width="48dp"
-				android:textColor="@color/forecolor"
-				android:text="前进"
-				android:gravity="center"
-				android:onClick="onMenu"
-				android:focusable="true"
-				android:clickable="true"/>
-
-			<TextView
-				android:layout_gravity="right"
-				android:layout_height="48dp"
-				android:layout_width="48dp"
-				android:textColor="@color/forecolor"
-				android:text="设置"
-				android:gravity="center"
-				android:onClick="onMenu"
-				android:focusable="true"
-				android:clickable="true"/>
-
-		</LinearLayout>
+			android:orientation="vertical"/>
 
 	</ScrollView>
 
@@ -133,6 +79,15 @@
 		android:layout_marginBottom="48dp"
 		android:layout_gravity="bottom"/>
 
+	<TextView
+		android:id="@+id/main_ti"
+		android:layout_height="24dp"
+		android:layout_width="match_parent"
+		android:text="AEX"
+		android:gravity="center"
+		android:layout_marginTop="-24dp"
+		android:textColor="@color/backcolor"/>
+
 	<oboard.zero.MenuButton
 		android:layout_gravity="bottom|right"
 		android:layout_height="48dp"
@@ -141,6 +96,11 @@
 		android:focusable="true"
 		android:clickable="true"
 		android:tag="@color/forecolor"/>
+
+	<AbsoluteLayout
+		android:layout_height="match_parent"
+		android:layout_width="match_parent"
+		android:id="@+id/main_w"/>
 
 </FrameLayout>
 
