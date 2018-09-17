@@ -89,38 +89,46 @@ public class W extends WebView {
 	int x = 0, y = 0;
 	@Override
 	public boolean onTouchEvent(MotionEvent event) {
-
 		switch (event.getAction()) {
 			case event.ACTION_DOWN:
 				x = (int)event.getRawX();
 				y = (int)event.getY();
 				break;
 			case event.ACTION_MOVE:
+				float ofx = 0;
 				if (x < getWidth() / 10) {
-					setX(event.getRawX() - x);
+					ofx = Math.abs(event.getRawX() - x);
+					if (ofx > getWidth() / 6)
+						ofx = getWidth() / 6;
+					setX(ofx);
+				} else if (x > getWidth() * 9 / 10) {
+					ofx = -Math.abs(event.getRawX() - x);
+					if (ofx < - getWidth() / 6)
+						ofx = - getWidth() / 6;
+					setX(ofx);
 				}
 				break;
 			case event.ACTION_UP:
+				Vibrator vibrator = (Vibrator)W.this.getContext().getSystemService(W.this.getContext().VIBRATOR_SERVICE);
+				float ax = getX();
+				setX(0);//归位
 				if (x < getWidth() / 10) {
-					float ax = getX();
-					setX(0);//归位
-					if (event.getRawX() - x > getWidth() / 8) {
-						AnimationSet aniA = new AnimationSet(true);
-						aniA.addAnimation(new TranslateAnimation(ax, 0, 0, 0));
-						aniA.setInterpolator(new DecelerateInterpolator());
-						aniA.setDuration(225);
-						aniA.setAnimationListener(new Animation.AnimationListener() {
-								public void onAnimationStart(Animation ani) {}
-								public void onAnimationRepeat(Animation ani) {}
-								public void onAnimationEnd(Animation ani) {
-									W.this.goBack();
-									Vibrator vibrator = (Vibrator)W.this.getContext().getSystemService(W.this.getContext().VIBRATOR_SERVICE);
-									vibrator.vibrate(10);
-								}
-							});
-						startAnimation(aniA);
+					if (ax >= getWidth() / 6) {
+						goBack();
+						vibrator.vibrate(10);
+					}
+				} else if (x > getWidth() * 9 / 10) {
+					if (ax <= - getWidth() / 6) {
+						goForward();
+						vibrator.vibrate(10);
 					}
 				}
+				
+				AnimationSet aniA = new AnimationSet(true);
+				aniA.addAnimation(new TranslateAnimation(ax, 0, 0, 0));
+				aniA.setInterpolator(new DecelerateInterpolator());
+				aniA.setDuration(225);
+				startAnimation(aniA);
 				break;
 		}
 		return super.onTouchEvent(event);
