@@ -42,6 +42,7 @@ public class M extends Activity {
 
 	static W v;//WebView
 	static View tg;//Ground
+	static MenuButton mb;//
 	static CardView c;//EditText Border
 	static EditText t;//URL text
 	static TextView ti;//title text
@@ -65,6 +66,7 @@ public class M extends Activity {
 		r = (FrameLayout) f.getParent();
 		m = (ScrollView) l.getParent();
 		ti = (TextView) findViewById(R.id.main_ti);
+		mb = (MenuButton)findViewById(R.id.main_mb);
 
 		S.init(this, "zero");
         if (S.get("first", true)) {
@@ -350,43 +352,49 @@ public class M extends Activity {
                 //d_c是变色器的开关
                 switch (uri.getHost().replace("www.", "m.")) {
                     case "m.bilibili.com":
-                        color = 0xffF06292;
+                        color = 0xfff06292;
                         break;
                     case "m.coolapk.com":
-                        color = 0xff4CAF50;
+                        color = 0xff4caf50;
                         break;
                     case "m.zhihu.com":
-                        color = 0xff2196F3;
-                        break;
-                    case "m.baidu.com":
-                        color = 0xffEEEEEE;
+                        color = 0xff2196f3;
                         break;
                     case "news.baidu.com":
-                        color = 0xff2196F3;
+                        color = 0xff2196f3;
                         break;
                     case "m.taobao.com":
-                        color = 0xffFF5722;
+                        color = 0xffff5722;
                         break;
                     case "m.tmall.com":
-                        color = 0xffE53935;
+                        color = 0xffe53935;
                         break;
                     case "music.163.com":
-                        color = 0xffE53935;
+                        color = 0xffe53935;
                         break;
                     case "baike.sogou.com":
-                        color = 0xff607D8B;
+                        color = 0xff607d8b;
                         break;
                     case "github.com":
-                        color = 0xff9E9E9E;
+                        color = 0xff212121;
                         break;
                     case "dushu.m.baidu.com":
-                        color = 0xffFF5722;
+                        color = 0xffff5722;
                         break;
                     case "zhihu.sogou.com":
-                        color = 0xff2196F3;
+                        color = 0xff2196f3;
                         break;
                     case "outlook.live.com":
-                        color = 0xff039BE5;
+                        color = 0xff039be5;
+                        break;
+					case "3g.163.com":
+                        color = 0xff51c23;
+                        break;
+					case "m.ui.com":
+                        color = 0xff03a9f4;
+                        break;
+					case "https://material.io/":
+						color = 0xff212121;
                         break;
                 }
 			}
@@ -409,6 +417,7 @@ public class M extends Activity {
 			}
 
 			t.setTextColor(fc);
+			mb.setColor(fc);
 			for (int i = 0;i < mm.size(); i++) {
 				mm.get(i).setTextColor(fc);
 			}
@@ -423,7 +432,7 @@ public class M extends Activity {
 
     @Override
     protected void onNewIntent(Intent intent) {
-        super.onNewIntent(intent);
+        //super.onNewIntent(intent);
         if (intent.getAction() == null) return;
         switch (intent.getAction()) {
             case Intent.ACTION_SEND:

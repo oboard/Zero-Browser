@@ -6,6 +6,8 @@ import android.view.*;
 
 public class MenuButton extends View {
 
+	int c;
+	
     public MenuButton(Context context) {
         this(context, null);
     }
@@ -16,7 +18,12 @@ public class MenuButton extends View {
 
     public MenuButton(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+		c = getContext().getResources().getColor(R.color.forecolor);
     }
+	
+	public void setColor(int color) {
+		c = color;
+	}
 
 	@Override
 	protected void onDraw(Canvas canvas) {
@@ -28,7 +35,7 @@ public class MenuButton extends View {
         p.setStyle(Paint.Style.STROKE);
 		p.setStrokeWidth(2f);
 		p.setAntiAlias(true);
-		p.setColor(getContext().getResources().getColor(R.color.forecolor));
+		p.setColor(c);
 		canvas.drawCircle(centreX, height * 1 / 3 + tranY, circleRadius, p);
 		canvas.drawCircle(centreX, height * 2 / 3 + tranY, circleRadius, p);
 		canvas.drawCircle(centreX, height * 3 / 3 + tranY, circleRadius, p);

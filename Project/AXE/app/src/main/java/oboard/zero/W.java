@@ -1,11 +1,18 @@
 package oboard.zero;
-import android.content.*;
-import android.net.*;
-import android.os.*;
-import android.util.*;
-import android.view.View.*;
-import android.webkit.*;
-import java.lang.reflect.*;
+import android.content.Context;
+import android.os.Build;
+import android.os.Vibrator;
+import android.util.AttributeSet;
+import android.view.MotionEvent;
+import android.view.animation.Animation;
+import android.view.animation.AnimationSet;
+import android.view.animation.DecelerateInterpolator;
+import android.view.animation.TranslateAnimation;
+import android.webkit.WebChromeClient;
+import android.webkit.WebSettings;
+import android.webkit.WebView;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 
 public class W extends WebView {
 
@@ -68,14 +75,59 @@ public class W extends WebView {
         webSettings.setCacheMode(webSettings.LOAD_NO_CACHE);
         webSettings.setDefaultTextEncodingName("UTF-8");
 
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP)
+            webSettings.setMixedContentMode(webSettings.MIXED_CONTENT_ALWAYS_ALLOW);
+
+
         //图片加载优化
         if (Build.VERSION.SDK_INT >= 19)
             webSettings.setLoadsImagesAutomatically(true);
         else
             webSettings.setLoadsImagesAutomatically(false);
-		
+
     }
-	
+	int x = 0, y = 0;
+	@Override
+	public boolean onTouchEvent(MotionEvent event) {
+
+		switch (event.getAction()) {
+			case event.ACTION_DOWN:
+				x = (int)event.getRawX();
+				y = (int)event.getY();
+				break;
+			case event.ACTION_MOVE:
+				if (x < getWidth() / 10) {
+					setX(event.getRawX() - x);
+				}
+				break;
+			case event.ACTION_UP:
+				if (x < getWidth() / 10) {
+					float ax = getX();
+					setX(0);//归位
+					if (event.getRawX() - x > getWidth() / 8) {
+						AnimationSet aniA = new AnimationSet(true);
+						aniA.addAnimation(new TranslateAnimation(ax, 0, 0, 0));
+						aniA.setInterpolator(new DecelerateInterpolator());
+						aniA.setDuration(225);
+						aniA.setAnimationListener(new Animation.AnimationListener() {
+								public void onAnimationStart(Animation ani) {}
+								public void onAnimationRepeat(Animation ani) {}
+								public void onAnimationEnd(Animation ani) {
+									W.this.goBack();
+									Vibrator vibrator = (Vibrator)W.this.getContext().getSystemService(W.this.getContext().VIBRATOR_SERVICE);
+									vibrator.vibrate(10);
+								}
+							});
+						startAnimation(aniA);
+					}
+				}
+				break;
+		}
+		return super.onTouchEvent(event);
+	}
+
+
+
     public static String toWeb(String s) {
         String url = s;
         if (!isUri(url))  {
@@ -95,5 +147,5 @@ public class W extends WebView {
             url.startsWith("about:") ||
 			url.startsWith("file:");
     }
-	
+
 }

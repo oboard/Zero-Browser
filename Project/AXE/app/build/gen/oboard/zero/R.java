@@ -25,6 +25,7 @@ public final class R {
     public static final class id {
         public static final int main_ground=0x7f080001;
         public static final int main_l=0x7f080002;
+        public static final int main_mb=0x7f080006;
         public static final int main_t=0x7f080003;
         public static final int main_tg=0x7f080004;
         public static final int main_ti=0x7f080005;

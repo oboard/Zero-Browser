@@ -95,7 +95,8 @@
 		android:onClick="onMenu"
 		android:focusable="true"
 		android:clickable="true"
-		android:tag="@color/forecolor"/>
+		android:tag="@color/forecolor"
+		android:id="@+id/main_mb"/>
 
 	<AbsoluteLayout
 		android:layout_height="match_parent"
